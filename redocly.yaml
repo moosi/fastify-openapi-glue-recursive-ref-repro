@@ -1,0 +1,15 @@
+extends:
+  - recommended
+
+rules:
+  security-defined: off # No auth yet
+  no-server-example.com: off # localhost is intentional for mock server
+  info-license: off # Not needed for internal API
+  tag-description: off # Keep tags minimal for now
+  operation-4xx-response: off # Will add error responses incrementally
+  no-invalid-media-type-examples:
+    severity: error
+  no-invalid-schema-examples:
+    severity: error
+  no-invalid-parameter-examples:
+    severity: error

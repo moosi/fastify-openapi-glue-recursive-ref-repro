@@ -1,0 +1,19 @@
+{
+  "name": "fastify-openapi-glue-recursive-ref-repro",
+  "version": "1.0.0",
+  "description": "Minimal reproduction: recursive $ref schemas produce unresolvable references in response serialization",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "repro": "npm run lint && node repro.js",
+    "lint": "redocly lint spec.yaml"
+  },
+  "dependencies": {
+    "fastify": "5.8.5",
+    "fastify-openapi-glue": "4.11.0",
+    "yaml": "2.8.3"
+  },
+  "devDependencies": {
+    "@redocly/cli": "2.28.0"
+  }
+}
