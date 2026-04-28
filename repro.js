@@ -5,28 +5,36 @@ import { parse } from "yaml";
 
 const spec = parse(readFileSync("spec.yaml", "utf-8"));
 
-class Service {
-  async getTree() {
-    return { id: "root", children: [] };
+function countRefs(value) {
+  if (Array.isArray(value)) {
+    return value.reduce((count, item) => count + countRefs(item), 0);
   }
-  async getForest() {
-    return [];
+
+  if (value && typeof value === "object") {
+    return Object.entries(value).reduce((count, [key, child]) => {
+      return count + (key === "$ref" ? 1 : 0) + countRefs(child);
+    }, 0);
+  }
+
+  return 0;
+}
+
+class Service {
+  async getUser() {
+    return { id: "user-1", name: "Ada Lovelace" };
   }
 }
 
 const app = Fastify({ logger: true });
+
+console.log(`$ref count before register: ${countRefs(spec)}\n`);
 
 await app.register(openapiGlue, {
   specification: spec,
   serviceHandlers: new Service(),
 });
 
-await app.ready();
-
-const treeRes = await app.inject({ method: "GET", url: "/tree" });
-console.log(`GET /tree → ${treeRes.statusCode}`);
-
-const forestRes = await app.inject({ method: "GET", url: "/forest" });
-console.log(`GET /forest → ${forestRes.statusCode}`);
+console.log(`$ref count after register: ${countRefs(spec)}\n`);
+console.log(JSON.stringify(spec, null, 2));
 
 await app.close();

@@ -1,49 +1,31 @@
 openapi: 3.1.0
 info:
-  title: Recursive $ref reproduction
+  title: Example schema
   version: 1.0.0
 
 servers:
   - url: http://localhost:3000
 
 paths:
-  /tree:
+  /user:
     get:
-      summary: Get a tree
-      operationId: getTree
+      summary: Get a user
+      operationId: getUser
       responses:
         "200":
-          description: A tree node with recursive children
+          description: A user
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TreeNode"
-
-  /forest:
-    get:
-      summary: Get a forest
-      operationId: getForest
-      responses:
-        "200":
-          description: Multiple trees (shares TreeNode schema with /tree)
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/TreeNode"
+                $ref: "#/components/schemas/User"
 
 components:
   schemas:
-    TreeNode:
+    User:
       type: object
       properties:
         id:
           type: string
-        label:
+        name:
           type: string
-        children:
-          type: array
-          items:
-            $ref: "#/components/schemas/TreeNode"
-      required: [id]
+      required: [id, name]
