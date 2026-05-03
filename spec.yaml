@@ -9,19 +9,19 @@ servers:
 paths:
   /tree:
     get:
-      summary: Get a tree
+      summary: Get a tree (response wraps TreeNode in allOf)
       operationId: getTree
       responses:
         "200":
-          description: A tree node with recursive children
+          description: A tree node with metadata
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TreeNode"
+                $ref: "#/components/schemas/AnnotatedTree"
 
   /forest:
     get:
-      summary: Get a forest
+      summary: Get a forest (response uses TreeNode directly)
       operationId: getForest
       responses:
         "200":
@@ -47,3 +47,17 @@ components:
           items:
             $ref: "#/components/schemas/TreeNode"
       required: [id]
+
+    AnnotatedTree:
+      allOf:
+        - type: object
+          properties:
+            metadata:
+              type: object
+              properties:
+                createdAt:
+                  type: string
+                updatedAt:
+                  type: string
+          required: [metadata]
+        - $ref: "#/components/schemas/TreeNode"

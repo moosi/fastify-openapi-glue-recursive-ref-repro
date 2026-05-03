@@ -7,7 +7,11 @@ const spec = parse(readFileSync("spec.yaml", "utf-8"));
 
 class Service {
   async getTree() {
-    return { id: "root", children: [] };
+    return {
+      metadata: { createdAt: "2026-01-01", updatedAt: "2026-01-01" },
+      id: "root",
+      children: [],
+    };
   }
   async getForest() {
     return [];
